@@ -1,0 +1,12 @@
+<app-table-header
+  title="Usuarios"
+  addLabel="Nuevo usuario"
+  (onAdd)="onAdd()">
+</app-table-header>
+
+<app-table
+  [columns]="columns"
+  [data]="users"
+  (onEdit)="onEdit($event)"
+  (onView)="onView($event)">
+</app-table>

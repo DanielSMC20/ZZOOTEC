@@ -1,0 +1,81 @@
+<div
+  *ngIf="order"
+  class="bg-white rounded-card shadow-card border border-gray-200 p-8 space-y-8"
+>
+  <!-- HEADER -->
+  <div class="flex items-center justify-between border-b pb-4">
+    <div>
+      <h2 class="text-xl font-bold text-gray-800">Orden #{{ order.id }}</h2>
+      <p class="text-sm text-gray-500">Detalle de la orden</p>
+    </div>
+
+    <button
+      (click)="back()"
+      class="text-sm font-medium text-primary hover:text-primary-hover"
+    >
+      ← Volver
+    </button>
+  </div>
+
+  <!-- INFO -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div class="bg-gray-50 p-5 rounded-form border border-gray-200">
+      <p class="text-xs text-gray-500 uppercase">Cliente</p>
+      <p class="text-lg font-semibold">{{ clientName }}</p>
+    </div>
+
+    <div class="bg-gray-50 p-5 rounded-form border border-gray-200">
+      <p class="text-xs text-gray-500 uppercase">Fecha</p>
+      <p class="text-lg font-semibold">{{ formatDate(order.fecha) }}</p>
+    </div>
+
+    <div class="bg-gray-50 p-5 rounded-form border border-gray-200">
+      <p class="text-xs text-gray-500 uppercase">Estado</p>
+      <span
+        class="px-4 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold"
+      >
+        {{ order.status }}
+      </span>
+    </div>
+
+    <div
+      class="bg-primary-light p-5 rounded-form border border-primary-lighter"
+    >
+      <p class="text-xs text-gray-500 uppercase">Total</p>
+      <p class="text-2xl font-bold">S/ {{ total.toFixed(2) }}</p>
+    </div>
+  </div>
+
+  <!-- PRODUCTOS -->
+  <div>
+    <h3 class="font-semibold mb-3">Productos</h3>
+
+    <table
+      class="w-full text-sm border border-gray-200 rounded-form overflow-hidden"
+    >
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-3 text-left">Producto</th>
+          <th class="px-4 py-3 text-center">Cantidad</th>
+          <th class="px-4 py-3 text-right">Precio</th>
+          <th class="px-4 py-3 text-right">Subtotal</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of order.items" class="border-t">
+          <td class="px-4 py-3">{{ item.productName }}</td>
+          <td class="px-4 py-3 text-center">{{ item.quantity }}</td>
+          <td class="px-4 py-3 text-right">S/ {{ item.price.toFixed(2) }}</td>
+          <td class="px-4 py-3 text-right font-semibold">
+            S/ {{ (item.price * item.quantity).toFixed(2) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex justify-end text-xl font-bold border-t pt-4">
+    Total: S/ {{ total.toFixed(2) }}
+  </div>
+</div>

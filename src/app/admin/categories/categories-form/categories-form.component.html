@@ -1,0 +1,123 @@
+<div
+  class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card p-4 md:p-6 lg:p-8 max-w-xl shadow-card mx-auto transition-colors"
+>
+  <div class="mb-6 md:mb-8">
+    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
+      {{
+        mode === "new"
+          ? "Nueva categoría"
+          : mode === "edit"
+            ? "Editar categoría"
+            : "Detalle de categoría"
+      }}
+    </h2>
+
+    <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+      {{
+        mode === "new"
+          ? "Registre una nueva categoría"
+          : mode === "edit"
+            ? "Actualice la información"
+            : "Información registrada"
+      }}
+    </p>
+  </div>
+
+  <form [formGroup]="form" class="space-y-4 md:space-y-6">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        Nombre
+      </label>
+
+      <input
+        formControlName="name"
+        placeholder="Ej: Laptops"
+        class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 disabled:bg-gray-100 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors"
+        [ngClass]="{
+          'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
+            !isFieldInvalid('name'),
+          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('name'),
+        }"
+      />
+
+      <p *ngIf="isFieldInvalid('name')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+        {{ getErrorMessage("name") }}
+      </p>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        Imagen
+      </label>
+
+      <label
+        *ngIf="mode === 'new' || mode === 'edit'"
+        class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-form p-6 md:p-8 flex flex-col items-center justify-center cursor-pointer hover:border-primary dark:hover:border-primary transition-colors text-gray-500 dark:text-gray-400"
+      >
+        <input
+          type="file"
+          accept="image/*"
+          class="hidden"
+          (change)="onFileChange($event)"
+        />
+
+        <span class="text-xs md:text-sm">📁 Subir imagen</span>
+      </label>
+
+      <div
+        *ngIf="imagePreview || categoryImage"
+        class="mt-4 flex justify-center"
+      >
+        <img
+          [src]="imagePreview || categoryImage"
+          class="w-32 h-32 md:w-40 md:h-40 object-cover rounded-form border border-gray-200 dark:border-gray-700"
+        />
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        Estado
+      </label>
+
+      <select
+        *ngIf="mode !== 'view'"
+        formControlName="status"
+        class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-colors"
+      >
+        <option value="Activo">Activo</option>
+        <option value="Inactivo">Inactivo</option>
+      </select>
+
+      <span
+        *ngIf="mode === 'view'"
+        class="inline-flex px-4 py-2 rounded-full text-xs md:text-sm font-semibold"
+        [ngClass]="{
+          'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400': form.value.status === 'Activo',
+          'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400': form.value.status === 'Inactivo',
+        }"
+      >
+        {{ form.value.status }}
+      </span>
+    </div>
+
+    <div class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 pt-4 md:pt-6">
+      <button
+        type="button"
+        class="w-full sm:w-auto px-6 py-2.5 md:py-3 text-sm md:text-base rounded-form bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        (click)="cancel()"
+      >
+        Volver
+      </button>
+
+      <button
+        *ngIf="mode === 'new' || mode === 'edit'"
+        type="button"
+        class="w-full sm:w-auto px-6 py-2.5 md:py-3 text-sm md:text-base rounded-form bg-primary text-white font-semibold hover:bg-primary-hover transition-colors"
+        (click)="submit()"
+      >
+        {{ mode === "new" ? "Crear" : "Guardar" }}
+      </button>
+    </div>
+  </form>
+</div>

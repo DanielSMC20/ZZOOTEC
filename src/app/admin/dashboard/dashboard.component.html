@@ -1,0 +1,292 @@
+<div class="min-h-screen bg-[#FAFAFA] dark:bg-gray-900 p-4 md:p-6 space-y-6 md:space-y-8 transition-colors">
+  <!-- ================= ALERT MODAL ================= -->
+  <div
+    *ngIf="showAlertsModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
+  >
+    <div
+      class="w-full max-w-2xl rounded-2xl bg-white dark:bg-gray-800 p-6 shadow-2xl border border-gray-100 dark:border-gray-700"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+          Resumen de alertas
+        </h3>
+        <button
+          class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          (click)="closeAlertsModal()"
+          aria-label="Cerrar"
+        >
+          OK
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/40 p-4">
+          <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-2">
+            Alertas de stock
+          </p>
+          <div *ngIf="stockAlerts.length === 0" class="text-sm text-gray-500 dark:text-gray-400">
+            No hay alertas por ahora
+          </div>
+          <div *ngFor="let alert of stockAlerts | slice:0:5" class="mb-2 last:mb-0">
+            <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+              {{ alert.name || 'Producto' }}
+            </div>
+            <div class="text-xs text-gray-700 dark:text-gray-300">
+              {{ alert.message || 'Stock actualizado' }}
+            </div>
+            <div class="text-[11px] text-gray-500 dark:text-gray-400">
+              {{ alert.action || 'Sin accion sugerida' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/40 p-4">
+          <p class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-2">
+            Promociones sugeridas
+          </p>
+          <div *ngIf="promotions.length === 0" class="text-sm text-gray-500 dark:text-gray-400">
+            No hay sugerencias por ahora
+          </div>
+          <div *ngFor="let promo of promotions | slice:0:5" class="mb-2 last:mb-0">
+            <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+              {{ promo.productName || promo.product || 'Producto' }}
+            </div>
+            <div class="text-xs text-gray-600 dark:text-gray-300">
+              {{ promo.strategy || promo.suggestion || 'Sin descripcion' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= HEADER ================= -->
+  <div>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+    <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">Resumen general del sistema</p>
+  </div>
+
+  <!-- ================= KPIs ================= -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+    <!-- Ventas -->
+    <div
+      class="bg-white dark:bg-gray-800 rounded-2xl p-4 md:p-5 border border-gray-100 dark:border-gray-700 shadow-[0_10px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_14px_40px_rgba(0,0,0,0.07)] dark:hover:shadow-[0_14px_40px_rgba(0,0,0,0.4)] transition-all"
+    >
+      <div class="flex justify-between items-center">
+        <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Ventas</p>
+        <div class="bg-[#C9A24D]/15 p-2 rounded-lg text-[#C9A24D]">
+          <lucide-icon [name]="icons.sales" class="w-4 h-4 md:w-5 md:h-5"> </lucide-icon>
+        </div>
+      </div>
+
+      <p class="text-xl md:text-2xl font-semibold mt-2 text-gray-900 dark:text-white">S/ {{ totalSales }}</p>
+
+      <div class="mt-3 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full">
+        <div class="h-full w-[35%] bg-[#C9A24D] rounded-full"></div>
+      </div>
+    </div>
+
+    <!-- Productos -->
+    <div
+      class="bg-white dark:bg-gray-800 rounded-2xl p-4 md:p-5 border border-gray-100 dark:border-gray-700 shadow-[0_10px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_14px_40px_rgba(0,0,0,0.07)] dark:hover:shadow-[0_14px_40px_rgba(0,0,0,0.4)] transition-all"
+    >
+      <div class="flex justify-between items-center">
+        <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Productos</p>
+        <div class="bg-[#C9A24D]/15 p-2 rounded-lg text-[#C9A24D]">
+          <lucide-icon [name]="icons.products" class="w-4 h-4 md:w-5 md:h-5"> </lucide-icon>
+        </div>
+      </div>
+
+      <p class="text-xl md:text-2xl font-semibold mt-2 text-gray-900 dark:text-white">{{ totalProducts }}</p>
+
+      <div class="mt-3 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full">
+        <div class="h-full w-[55%] bg-[#C9A24D] rounded-full"></div>
+      </div>
+    </div>
+
+    <!-- Órdenes -->
+    <div
+      class="bg-white dark:bg-gray-800 rounded-2xl p-4 md:p-5 border border-gray-100 dark:border-gray-700 shadow-[0_10px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_14px_40px_rgba(0,0,0,0.07)] dark:hover:shadow-[0_14px_40px_rgba(0,0,0,0.4)] transition-all"
+    >
+      <div class="flex justify-between items-center">
+        <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Órdenes</p>
+        <div class="bg-red-100 p-2 rounded-lg text-red-500">
+          <lucide-icon [name]="icons.orders" class="w-4 h-4 md:w-5 md:h-5"> </lucide-icon>
+        </div>
+      </div>
+
+      <p class="text-xl md:text-2xl font-semibold mt-2 text-gray-900 dark:text-white">{{ totalOrders }}</p>
+
+      <div class="mt-3 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full">
+        <div class="h-full w-[20%] bg-red-400 rounded-full"></div>
+      </div>
+    </div>
+
+    <!-- Clientes -->
+    <div
+      class="bg-white dark:bg-gray-800 rounded-2xl p-4 md:p-5 border border-gray-100 dark:border-gray-700 shadow-[0_10px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_14px_40px_rgba(0,0,0,0.07)] dark:hover:shadow-[0_14px_40px_rgba(0,0,0,0.4)] transition-all"
+    >
+      <div class="flex justify-between items-center">
+        <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Clientes</p>
+        <div class="bg-green-100 p-2 rounded-lg text-green-600">
+          <lucide-icon [name]="icons.clients" class="w-4 h-4 md:w-5 md:h-5"> </lucide-icon>
+        </div>
+      </div>
+
+      <p class="text-xl md:text-2xl font-semibold mt-2 text-gray-900 dark:text-white">124</p>
+
+      <div class="mt-3 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full">
+        <div class="h-full w-[70%] bg-green-500 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= GRÁFICO + IA ================= -->
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 md:gap-6">
+    <!-- Gráfico -->
+    <div
+      class="xl:col-span-8 bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 border border-gray-100 dark:border-gray-700 shadow-[0_10px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+    >
+      <h3 class="font-semibold text-sm md:text-base text-gray-800 dark:text-gray-200 mb-4">Ventas del mes</h3>
+
+      <svg viewBox="0 0 500 180" class="w-full h-48">
+        <defs>
+          <linearGradient id="goldGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#C9A24D" stop-opacity="0.35" />
+            <stop offset="100%" stop-color="#C9A24D" stop-opacity="0.05" />
+          </linearGradient>
+        </defs>
+
+        <path
+          d="M0 120 C 60 80, 120 130, 180 90
+             S 300 70, 360 90
+             S 450 50, 500 70
+             L 500 180 L 0 180 Z"
+          fill="url(#goldGradient)"
+        />
+
+        <path
+          d="M0 120 C 60 80, 120 130, 180 90
+             S 300 70, 360 90
+             S 450 50, 500 70"
+          fill="none"
+          stroke="#C9A24D"
+          stroke-width="3"
+          stroke-linecap="round"
+        />
+      </svg>
+    </div>
+
+    <!-- IA -->
+    <div class="xl:col-span-4">
+      <app-ai-panel [preference]="preference" [promotions]="promotions">
+      </app-ai-panel>
+      <a
+        routerLink="/admin/market-intelligence"
+        class="mt-3 inline-flex items-center text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+      >
+        Ver inteligencia de mercado
+      </a>
+    </div>
+  </div>
+
+  <!-- ================= TABLA + ACTIVIDAD ================= -->
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 md:gap-6">
+    <!-- Tabla -->
+    <div
+      class="xl:col-span-8 bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 border border-gray-100 dark:border-gray-700 shadow-[0_10px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+    >
+      <h3 class="font-semibold text-sm md:text-base text-gray-900 dark:text-white mb-4">Productos vendidos</h3>
+
+      <div class="overflow-x-auto -mx-4 md:mx-0">
+        <table class="w-full text-xs md:text-sm min-w-[500px]">
+        <thead class="border-b border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400">
+          <tr>
+            <th class="text-left py-2">Producto</th>
+            <th>Precio</th>
+            <th>Ventas</th>
+            <th class="text-gray-700 dark:text-gray-300">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <td class="py-3 text-gray-900 dark:text-gray-100">Samsung Galaxy S5</td>
+            <td class="text-gray-700 dark:text-gray-300">S/ 800</td>
+            <td class="text-gray-700 dark:text-gray-300">2 unidades</td>
+            <td class="text-green-600 dark:text-green-400">● Disponible</td>
+          </tr>
+          <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+            <td class="py-3 text-gray-900 dark:text-gray-100">iPhone 12</td>
+            <td class="text-gray-700 dark:text-gray-300">S/ 1,500</td>
+            <td class="text-gray-700 dark:text-gray-300">1 unidad</td>
+            <td class="text-red-500 dark:text-red-400">● Agotado</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
+    <!-- Movimientos de Inventario -->
+    <div
+      class="xl:col-span-4 bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 border border-gray-100 dark:border-gray-700 shadow-[0_10px_30px_rgba(0,0,0,0.05)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+    >
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold text-sm md:text-base text-gray-900 dark:text-white">Movimientos Recientes</h3>
+        <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded-lg text-blue-600 dark:text-blue-400">
+          <lucide-icon [name]="icons.inventory" class="w-4 h-4"> </lucide-icon>
+        </div>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <div *ngIf="loading" class="text-center py-8 text-gray-400 dark:text-gray-500">
+          Cargando...
+        </div>
+
+        <div
+          *ngIf="!loading && recentMovements.length === 0"
+          class="text-center py-8 text-gray-400 dark:text-gray-500"
+        >
+          No hay movimientos recientes
+        </div>
+
+        <div
+          *ngFor="let movement of recentMovements"
+          class="flex gap-3 items-start"
+        >
+          <div
+            class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+            [ngClass]="[
+              getMovementBgColor(movement.type),
+              getMovementColor(movement.type),
+            ]"
+          >
+            <lucide-icon
+              [name]="getMovementIcon(movement.type)"
+              class="w-4 h-4"
+            >
+            </lucide-icon>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-medium text-gray-900 dark:text-white truncate">
+              {{ movement.product.name }}
+            </p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              <span
+                [ngClass]="getMovementColor(movement.type)"
+                class="font-semibold"
+              >
+                {{ movement.type === "ENTRADA" ? "+" : "-"
+                }}{{ movement.quantity }}
+              </span>
+              unidades • {{ movement.origin }}
+            </p>
+            <span class="text-xs text-gray-400 dark:text-gray-500">
+              {{ formatDate(movement.date) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

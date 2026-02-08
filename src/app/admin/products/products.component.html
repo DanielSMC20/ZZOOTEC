@@ -1,0 +1,13 @@
+<app-table-header
+  title="Productos"
+  addLabel="Añadir producto"
+  (onAdd)="onAddProduct()"
+  (onSearch)="onSearchProduct($event)">
+</app-table-header>
+
+<app-table
+  [columns]="columns"
+  [data]="products"
+  (onView)="onView($event)"
+  (onEdit)="onEditProduct($event)">
+</app-table>

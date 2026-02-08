@@ -1,0 +1,11 @@
+<app-table-header
+  title="Órdenes"
+  [showAdd]="false">
+</app-table-header>
+
+<app-table
+  [columns]="columns"
+  [data]="orders"
+  [showDelete]="false"
+  (onView)="onViewOrder($event)">
+</app-table>

@@ -1,0 +1,14 @@
+<app-table-header
+  title="Categorías"
+  addLabel="Nueva categoría"
+  (onAdd)="onAdd()"
+  (onSearch)="onSearch($event)">
+</app-table-header>
+
+<app-table
+  [columns]="columns"
+  [data]="categories"
+  (onEdit)="onEdit($event)"
+  (onDelete)="onDelete($event)"
+  (onView)="onView($event)">
+</app-table>

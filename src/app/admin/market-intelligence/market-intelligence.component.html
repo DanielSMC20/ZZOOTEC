@@ -1,0 +1,120 @@
+<div class="min-h-screen bg-[#FAFAFA] dark:bg-gray-900 p-4 md:p-6 space-y-6 transition-colors">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+        Inteligencia de mercado
+      </h1>
+      <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+        Indicadores y alertas para decisiones comerciales
+      </p>
+    </div>
+    <a
+      routerLink="/admin/dashboard"
+      class="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+    >
+      Volver al dashboard
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
+      <p class="text-xs text-gray-500 dark:text-gray-400">Clientes</p>
+      <p class="text-xl font-semibold text-gray-900 dark:text-white">
+        {{ overview?.totalClients ?? 0 }}
+      </p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
+      <p class="text-xs text-gray-500 dark:text-gray-400">Productos</p>
+      <p class="text-xl font-semibold text-gray-900 dark:text-white">
+        {{ overview?.totalProducts ?? 0 }}
+      </p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
+      <p class="text-xs text-gray-500 dark:text-gray-400">Ventas totales</p>
+      <p class="text-xl font-semibold text-gray-900 dark:text-white">
+        {{ overview?.totalSales ?? 0 }}
+      </p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
+      <p class="text-xs text-gray-500 dark:text-gray-400">Ventas 30 dias</p>
+      <p class="text-xl font-semibold text-gray-900 dark:text-white">
+        {{ overview?.salesLast30Days ?? 0 }}
+      </p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 shadow-sm">
+      <p class="text-xs text-gray-500 dark:text-gray-400">Ingresos 30 dias</p>
+      <p class="text-xl font-semibold text-gray-900 dark:text-white">
+        {{ formatCurrency(overview?.revenueLast30Days) }}
+      </p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
+    <div class="xl:col-span-6 bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm">
+      <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Alertas de stock</h3>
+      <div *ngIf="stockAlerts.length === 0" class="text-sm text-gray-500 dark:text-gray-400">Sin alertas</div>
+      <div *ngFor="let alert of stockAlerts | slice:0:8" class="py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ alert.name }}</div>
+        <div class="text-xs text-gray-600 dark:text-gray-300">{{ alert.message }}</div>
+        <div class="text-[11px] text-gray-500 dark:text-gray-400">{{ alert.action }}</div>
+      </div>
+    </div>
+
+    <div class="xl:col-span-6 bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm">
+      <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Promociones sugeridas</h3>
+      <div *ngIf="promotions.length === 0" class="text-sm text-gray-500 dark:text-gray-400">Sin sugerencias</div>
+      <div *ngFor="let promo of promotions | slice:0:8" class="py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ promo.productName || promo.product }}</div>
+        <div class="text-xs text-gray-600 dark:text-gray-300">{{ promo.strategy || promo.suggestion }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
+    <div class="xl:col-span-4 bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm">
+      <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Top productos</h3>
+      <div *ngIf="topProducts.length === 0" class="text-sm text-gray-500 dark:text-gray-400">Sin datos</div>
+      <div *ngFor="let item of topProducts" class="py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ item.productName }}</div>
+        <div class="text-xs text-gray-600 dark:text-gray-300">
+          Cantidad: {{ item.totalQuantity }} | Ingresos: {{ formatCurrency(item.totalRevenue) }}
+        </div>
+      </div>
+    </div>
+
+    <div class="xl:col-span-4 bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm">
+      <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Productos con baja rotacion</h3>
+      <div *ngIf="slowProducts.length === 0" class="text-sm text-gray-500 dark:text-gray-400">Sin datos</div>
+      <div *ngFor="let item of slowProducts" class="py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ item.productName }}</div>
+        <div class="text-xs text-gray-600 dark:text-gray-300">
+          Stock: {{ item.stock }} | Precio: {{ formatCurrency(item.price) }}
+        </div>
+      </div>
+    </div>
+
+    <div class="xl:col-span-4 bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm">
+      <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Clientes inactivos</h3>
+      <div *ngIf="inactiveClients.length === 0" class="text-sm text-gray-500 dark:text-gray-400">Sin datos</div>
+      <div *ngFor="let item of inactiveClients" class="py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ item.fullName }}</div>
+        <div class="text-xs text-gray-600 dark:text-gray-300">
+          Dias sin compra: {{ item.daysInactive }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm">
+      <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">Stock por categoria</h3>
+      <div *ngIf="categoryStock.length === 0" class="text-sm text-gray-500 dark:text-gray-400">Sin datos</div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div *ngFor="let item of categoryStock" class="rounded-xl border border-gray-100 dark:border-gray-700 p-3">
+          <div class="text-xs text-gray-500 dark:text-gray-400">{{ item.category }}</div>
+          <div class="text-sm font-semibold text-gray-900 dark:text-white">{{ item.totalStock }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

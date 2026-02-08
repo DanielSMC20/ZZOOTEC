@@ -1,0 +1,14 @@
+<app-table-header
+  title="Marcas"
+  addLabel="Nueva marca"
+  (onAdd)="onAdd()"
+  (onSearch)="onSearch($event)">
+</app-table-header>
+
+<app-table
+  [columns]="columns"
+  [data]="brands"
+  (onEdit)="onEdit($event)"
+  (onDelete)="onDelete($event)"
+  (onView)="onView($event)">
+</app-table>

@@ -1,0 +1,14 @@
+<app-table-header
+  title="Clientes"
+  [showAdd]="false"
+  (onAdd)="onAdd()"
+  (onSearch)="onSearchClient($event)">
+</app-table-header>
+
+<app-table
+  [columns]="columns"
+  [data]="clients"
+  [showDelete]="false"
+  (onView)="onViewClient($event)"
+  (onEdit)="onEditClient($event)">
+</app-table>
