@@ -35,10 +35,15 @@
     <!-- =============== COLUMNA IZQUIERDA =============== -->
     <!-- ================================================= -->
     <div>
-      <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+      <form
+        [formGroup]="form"
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
+      >
         <!-- ================= NOMBRE ================= -->
         <div class="md:col-span-2">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Nombre del producto
           </label>
           <input
@@ -49,17 +54,23 @@
             [ngClass]="{
               'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
                 !isFieldInvalid('name'),
-              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('name'),
+              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+                isFieldInvalid('name'),
             }"
           />
-          <p *ngIf="isFieldInvalid('name')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+          <p
+            *ngIf="isFieldInvalid('name')"
+            class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+          >
             {{ getErrorMessage("name") }}
           </p>
         </div>
 
         <!-- ================= DESCRIPCIÓN ================= -->
         <div class="md:col-span-2">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Descripción
           </label>
           <textarea
@@ -83,7 +94,9 @@
           </p>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Categoría
           </label>
           <select
@@ -113,7 +126,9 @@
 
         <!-- ================= MARCA ================= -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Marca
           </label>
           <select
@@ -123,7 +138,8 @@
             [ngClass]="{
               'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
                 !isFieldInvalid('brandId'),
-              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('brandId'),
+              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+                isFieldInvalid('brandId'),
             }"
           >
             <option value="">Seleccione marca</option>
@@ -141,7 +157,9 @@
 
         <!-- ================= PRECIO ================= -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Precio (S/.)
           </label>
           <input
@@ -155,17 +173,23 @@
             [ngClass]="{
               'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
                 !isFieldInvalid('price'),
-              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('price'),
+              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+                isFieldInvalid('price'),
             }"
           />
-          <p *ngIf="isFieldInvalid('price')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+          <p
+            *ngIf="isFieldInvalid('price')"
+            class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+          >
             {{ getErrorMessage("price") }}
           </p>
         </div>
 
         <!-- ================= STOCK ================= -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Stock
           </label>
           <input
@@ -178,17 +202,23 @@
             [ngClass]="{
               'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
                 !isFieldInvalid('stock'),
-              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('stock'),
+              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+                isFieldInvalid('stock'),
             }"
           />
-          <p *ngIf="isFieldInvalid('stock')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+          <p
+            *ngIf="isFieldInvalid('stock')"
+            class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+          >
             {{ getErrorMessage("stock") }}
           </p>
         </div>
 
         <!-- ================= ESTADO ================= -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Estado
           </label>
           <select
@@ -203,7 +233,9 @@
 
         <!-- ================= UPLOAD (NO VIEW) ================= -->
         <div *ngIf="mode !== 'view'" class="md:col-span-2">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >
             Imagen del producto
           </label>
 
@@ -217,7 +249,10 @@
               (change)="onFileChange($event)"
             />
 
-            <p *ngIf="!imagePreview" class="text-sm text-gray-500 dark:text-gray-400">
+            <p
+              *ngIf="!imagePreview"
+              class="text-sm text-gray-500 dark:text-gray-400"
+            >
               📁 Click para subir imagen
             </p>
 
@@ -231,7 +266,9 @@
       </form>
 
       <!-- ================= BOTONES ================= -->
-      <div class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 mt-6 md:mt-8">
+      <div
+        class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 mt-6 md:mt-8"
+      >
         <button
           class="w-full sm:w-auto px-6 py-2.5 md:py-3 text-sm md:text-base rounded-form bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
           (click)="cancel()"
@@ -253,14 +290,18 @@
     <!-- =============== COLUMNA DERECHA (SOLO VIEW) ===== -->
     <!-- ================================================= -->
     <div *ngIf="mode === 'view' && productImage" class="sticky top-8">
-      <div class="rounded-card border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 md:p-6 shadow-card">
+      <div
+        class="rounded-card border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 md:p-6 shadow-card"
+      >
         <img
           [src]="productImage"
           class="w-full h-48 md:h-72 object-contain rounded-form"
         />
 
         <div class="mt-4 md:mt-6 text-center">
-          <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Imagen del producto</p>
+          <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+            Imagen del producto
+          </p>
         </div>
       </div>
     </div>

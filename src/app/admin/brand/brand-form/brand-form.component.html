@@ -27,7 +27,9 @@
   <form [formGroup]="form" class="space-y-4 md:space-y-6">
     <!-- NOMBRE -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
         Nombre de la marca
       </label>
 
@@ -39,17 +41,23 @@
         [ngClass]="{
           'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
             !isFieldInvalid('name'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('name'),
+          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+            isFieldInvalid('name'),
         }"
       />
-      <p *ngIf="isFieldInvalid('name')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+      <p
+        *ngIf="isFieldInvalid('name')"
+        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+      >
         {{ getErrorMessage("name") }}
       </p>
     </div>
 
     <!-- LOGO -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
         Logo de la marca
       </label>
 
@@ -78,11 +86,16 @@
           />
         </svg>
 
-        <span class="text-xs md:text-sm text-center"> 📁 Click para subir logo </span>
+        <span class="text-xs md:text-sm text-center">
+          📁 Click para subir logo
+        </span>
       </label>
 
       <!-- SOLO VISTA -->
-      <p *ngIf="mode === 'view'" class="text-xs md:text-sm text-gray-500 dark:text-gray-400 italic">
+      <p
+        *ngIf="mode === 'view'"
+        class="text-xs md:text-sm text-gray-500 dark:text-gray-400 italic"
+      >
         El logo no puede modificarse en modo visualización.
       </p>
     </div>
@@ -98,13 +111,19 @@
       />
 
       <div>
-        <p class="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">Vista previa</p>
+        <p
+          class="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
+          Vista previa
+        </p>
         <p class="text-xs text-gray-500 dark:text-gray-400">Logo actual</p>
       </div>
     </div>
 
     <!-- BOTONES -->
-    <div class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 pt-4 md:pt-6">
+    <div
+      class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 pt-4 md:pt-6"
+    >
       <button
         type="button"
         class="w-full sm:w-auto px-6 py-2.5 md:py-3 text-sm md:text-base rounded-form bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"

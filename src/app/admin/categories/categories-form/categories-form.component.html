@@ -25,7 +25,9 @@
 
   <form [formGroup]="form" class="space-y-4 md:space-y-6">
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
         Nombre
       </label>
 
@@ -36,17 +38,23 @@
         [ngClass]="{
           'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
             !isFieldInvalid('name'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('name'),
+          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+            isFieldInvalid('name'),
         }"
       />
 
-      <p *ngIf="isFieldInvalid('name')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+      <p
+        *ngIf="isFieldInvalid('name')"
+        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+      >
         {{ getErrorMessage("name") }}
       </p>
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
         Imagen
       </label>
 
@@ -76,7 +84,9 @@
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
         Estado
       </label>
 
@@ -93,15 +103,19 @@
         *ngIf="mode === 'view'"
         class="inline-flex px-4 py-2 rounded-full text-xs md:text-sm font-semibold"
         [ngClass]="{
-          'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400': form.value.status === 'Activo',
-          'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400': form.value.status === 'Inactivo',
+          'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400':
+            form.value.status === 'Activo',
+          'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400':
+            form.value.status === 'Inactivo',
         }"
       >
         {{ form.value.status }}
       </span>
     </div>
 
-    <div class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 pt-4 md:pt-6">
+    <div
+      class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 pt-4 md:pt-6"
+    >
       <button
         type="button"
         class="w-full sm:w-auto px-6 py-2.5 md:py-3 text-sm md:text-base rounded-form bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"

@@ -10,6 +10,10 @@ import { AiService } from '../../core/service/ai.service';
 import { AiPanelComponent } from './components/ai-panel/ai-panel.component';
 import { InventoryService } from '../../core/service/inventory.service';
 import { InventoryMovement } from '../../models/inventory-movement.model';
+import {
+  SalesStatsService,
+  SalesStatistics,
+} from '../../core/service/sales-stats.service';
 
 import {
   LucideAngularModule,
@@ -21,6 +25,9 @@ import {
   TrendingUp,
   TrendingDown,
   Package2,
+  TrendingUpIcon,
+  TrendingDownIcon,
+  Calendar,
 } from 'lucide-angular';
 
 @Component({
@@ -36,6 +43,17 @@ export class DashboardComponent implements OnInit {
   stockAlerts: any[] = [];
   showAlertsModal = false;
 
+  salesStats: SalesStatistics = {
+    totalSales: 0,
+    averageDaily: 0,
+    bestDay: null,
+    growth: 0,
+    dailySales: [],
+    topProducts: [],
+  };
+  topProducts: any[] = [];
+  bestSellers: any[] = [];
+
   icons = {
     sales: DollarSign,
     products: Package,
@@ -45,6 +63,9 @@ export class DashboardComponent implements OnInit {
     entrada: TrendingUp,
     salida: TrendingDown,
     inventory: Package2,
+    trendUp: TrendingUpIcon,
+    trendDown: TrendingDownIcon,
+    calendar: Calendar,
   };
 
   totalClients = 0;
@@ -53,16 +74,20 @@ export class DashboardComponent implements OnInit {
   totalSales = 0;
   recentMovements: InventoryMovement[] = [];
 
+  chartRef: any;
+
   constructor(
     private clientsService: ClientsService,
     private productsService: ProductService,
     private ordersService: OrdersService,
     private aiService: AiService,
     private inventoryService: InventoryService,
+    private salesStatsService: SalesStatsService,
   ) {}
 
   ngOnInit(): void {
     this.loadDashboardData();
+    this.loadSalesStatistics();
 
     const modalKey = 'biModalShown';
     if (!sessionStorage.getItem(modalKey)) {
@@ -134,6 +159,54 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  loadSalesStatistics() {
+    this.salesStatsService.getCurrentMonthStats().subscribe({
+      next: (stats) => {
+        this.salesStats = stats;
+        this.topProducts = stats.topProducts;
+        this.bestSellers = stats.topProducts.slice(0, 5);
+      },
+      error: (err) => {
+        console.warn('Error cargando estadísticas de ventas:', err);
+      },
+    });
+  }
+
+  generateSampleData() {
+    this.salesStatsService.seedSalesData().subscribe({
+      next: () => {
+        console.log('Datos de prueba generados exitosamente');
+        this.loadSalesStatistics();
+        this.loadDashboardData();
+      },
+      error: (err) => {
+        console.error('Error generando datos:', err);
+      },
+    });
+  }
+
+  generateChartPath(): string {
+    if (!this.salesStats || this.salesStats.dailySales.length === 0) {
+      return 'M0,150 L500,150';
+    }
+
+    const sales = this.salesStats.dailySales;
+    const maxSale = Math.max(...sales.map((s) => s.total));
+    const width = 500;
+    const height = 180;
+    const padding = 20;
+
+    const points = sales.map((sale, index) => {
+      const x =
+        (index / (sales.length - 1 || 1)) * (width - padding * 2) + padding;
+      const y =
+        height - ((sale.total / maxSale) * (height - padding * 2) + padding);
+      return `${x},${y}`;
+    });
+
+    return `M${points.join(' L')}`;
+  }
+
   getMovementIcon(type: string) {
     return type === 'ENTRADA' ? this.icons.entrada : this.icons.salida;
   }
@@ -157,5 +230,14 @@ export class DashboardComponent implements OnInit {
     if (minutes < 60) return `Hace ${minutes} min`;
     if (hours < 24) return `Hace ${hours}h`;
     return `Hace ${days}d`;
+  }
+
+  formatCurrency(amount: number): string {
+    return new Intl.NumberFormat('es-PE', {
+      style: 'currency',
+      currency: 'PEN',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
   }
 }

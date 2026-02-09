@@ -1,26 +1,20 @@
-import { HttpClient } from "@angular/common/http";
-import { Component, Injectable, Input } from "@angular/core";
-import { environment } from "../../../../../environments/environment";
-import { CommonModule } from "@angular/common";
-
+import { HttpClient } from '@angular/common/http';
+import { Component, Injectable, Input } from '@angular/core';
+import { environment } from '../../../../../environments/environment';
+import { CommonModule } from '@angular/common';
 
 import { LucideAngularModule, Sparkles } from 'lucide-angular';
-
-
 
 @Injectable({ providedIn: 'root' })
 @Component({
   selector: 'app-ai-panel',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule
-  ],
-  templateUrl: './ai-panel.component.html'
+  imports: [CommonModule, LucideAngularModule],
+  templateUrl: './ai-panel.component.html',
 })
 export class AiPanelComponent {
-
-
   icons = {
-  ai: Sparkles
+    ai: Sparkles,
   };
   @Input() preference: any;
   @Input() promotions: any[] = [];

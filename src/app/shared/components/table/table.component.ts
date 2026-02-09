@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export interface  TableColumn {
+export interface TableColumn {
   key: string;
   label: string;
   type?: 'text' | 'badge' | 'actions' | 'image';
@@ -14,7 +14,6 @@ export interface  TableColumn {
   templateUrl: './table.component.html',
 })
 export class TableComponent {
-
   @Input() columns: TableColumn[] = [];
   @Input() data: any[] = [];
 

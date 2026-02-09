@@ -8,12 +8,7 @@ import { HeaderComponent } from '../../shared/components/header/header.component
   selector: 'app-admin-layout',
   standalone: true,
   templateUrl: './admin-layout.component.html',
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    SidebarComponent,
-    HeaderComponent
-  ]
+  imports: [CommonModule, RouterOutlet, SidebarComponent, HeaderComponent],
 })
 export class AdminLayoutComponent {
   sidebarOpen = false;

@@ -26,10 +26,14 @@
   </div>
 
   <!-- FORM -->
-  <form [formGroup]="form" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+  <form
+    [formGroup]="form"
+    class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
+  >
     <!-- NOMBRES -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
         >Nombres</label
       >
       <input
@@ -41,17 +45,22 @@
         [ngClass]="{
           'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
             !isFieldInvalid('nombres'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('nombres'),
+          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+            isFieldInvalid('nombres'),
         }"
       />
-      <p *ngIf="isFieldInvalid('nombres')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+      <p
+        *ngIf="isFieldInvalid('nombres')"
+        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+      >
         {{ getErrorMessage("nombres") }}
       </p>
     </div>
 
     <!-- APELLIDOS -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
         >Apellidos</label
       >
       <input
@@ -63,17 +72,22 @@
         [ngClass]="{
           'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
             !isFieldInvalid('apellidos'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('apellidos'),
+          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+            isFieldInvalid('apellidos'),
         }"
       />
-      <p *ngIf="isFieldInvalid('apellidos')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+      <p
+        *ngIf="isFieldInvalid('apellidos')"
+        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+      >
         {{ getErrorMessage("apellidos") }}
       </p>
     </div>
 
     <!-- TELÉFONO -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
         >Teléfono</label
       >
       <input
@@ -86,17 +100,24 @@
         [ngClass]="{
           'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
             !isFieldInvalid('telefono'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('telefono'),
+          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+            isFieldInvalid('telefono'),
         }"
       />
-      <p *ngIf="isFieldInvalid('telefono')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+      <p
+        *ngIf="isFieldInvalid('telefono')"
+        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+      >
         {{ getErrorMessage("telefono") }}
       </p>
     </div>
 
     <!-- CORREO -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Correo</label>
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+        >Correo</label
+      >
       <input
         formControlName="correo"
         type="email"
@@ -106,17 +127,22 @@
         [ngClass]="{
           'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
             !isFieldInvalid('correo'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('correo'),
+          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+            isFieldInvalid('correo'),
         }"
       />
-      <p *ngIf="isFieldInvalid('correo')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+      <p
+        *ngIf="isFieldInvalid('correo')"
+        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+      >
         {{ getErrorMessage("correo") }}
       </p>
     </div>
 
     <!-- CANAL ORIGEN -->
     <div class="md:col-span-2">
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
         >Canal de origen</label
       >
       <select
@@ -132,7 +158,9 @@
   </form>
 
   <!-- BOTONES -->
-  <div class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 pt-4 md:pt-6">
+  <div
+    class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 pt-4 md:pt-6"
+  >
     <button
       type="button"
       (click)="cancel()"

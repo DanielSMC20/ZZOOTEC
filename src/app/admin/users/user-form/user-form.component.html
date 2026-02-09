@@ -27,7 +27,9 @@
   <form [formGroup]="form" class="space-y-4 md:space-y-6">
     <!-- EMAIL -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
         Correo electrónico
       </label>
 
@@ -40,17 +42,23 @@
         [ngClass]="{
           'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
             !isFieldInvalid('email'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('email'),
+          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+            isFieldInvalid('email'),
         }"
       />
-      <p *ngIf="isFieldInvalid('email')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+      <p
+        *ngIf="isFieldInvalid('email')"
+        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+      >
         {{ getErrorMessage("email") }}
       </p>
     </div>
 
     <!-- TELÉFONO -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
         Teléfono
       </label>
 
@@ -64,17 +72,23 @@
         [ngClass]="{
           'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
             !isFieldInvalid('telefono'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('telefono'),
+          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+            isFieldInvalid('telefono'),
         }"
       />
-      <p *ngIf="isFieldInvalid('telefono')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+      <p
+        *ngIf="isFieldInvalid('telefono')"
+        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+      >
         {{ getErrorMessage("telefono") }}
       </p>
     </div>
 
     <!-- FECHA DE NACIMIENTO -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
         Fecha de nacimiento
       </label>
 
@@ -86,11 +100,63 @@
         [ngClass]="{
           'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
             !isFieldInvalid('fechaNacimiento'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50': isFieldInvalid('fechaNacimiento'),
+          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+            isFieldInvalid('fechaNacimiento'),
         }"
       />
-      <p *ngIf="isFieldInvalid('fechaNacimiento')" class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1">
+      <p
+        *ngIf="isFieldInvalid('fechaNacimiento')"
+        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
+      >
         {{ getErrorMessage("fechaNacimiento") }}
+      </p>
+    </div>
+
+    <!-- IMAGEN DE PERFIL -->
+    <div>
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
+        Imagen de perfil
+      </label>
+
+      <input
+        type="file"
+        #fileInput
+        accept="image/*"
+        class="hidden"
+        (change)="onFileChange($event)"
+        [disabled]="mode === 'view'"
+      />
+
+      <div class="flex items-center gap-4">
+        <div
+          *ngIf="imagePreview || currentImage"
+          class="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600"
+        >
+          <img
+            [src]="imagePreview || currentImage"
+            class="w-full h-full object-cover"
+            alt="Preview"
+          />
+        </div>
+
+        <button
+          *ngIf="mode !== 'view'"
+          type="button"
+          (click)="fileInput.click()"
+          class="px-4 py-2 text-sm rounded-form border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+        >
+          {{
+            imagePreview || currentImage
+              ? "Cambiar imagen"
+              : "Seleccionar imagen"
+          }}
+        </button>
+      </div>
+
+      <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+        Formatos: JPG, PNG, WEBP (máx. 5MB)
       </p>
     </div>
 
@@ -98,7 +164,9 @@
 
     <!-- ROL -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label
+        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+      >
         Rol de usuario
       </label>
 
@@ -114,18 +182,26 @@
     </div>
 
     <!-- ACTIVO -->
-    <div class="flex items-center gap-3 p-3 md:p-4 border border-gray-200 dark:border-gray-700 rounded-form bg-gray-50 dark:bg-gray-700/50">
+    <div
+      class="flex items-center gap-3 p-3 md:p-4 border border-gray-200 dark:border-gray-700 rounded-form bg-gray-50 dark:bg-gray-700/50"
+    >
       <input
         type="checkbox"
         formControlName="activo"
         class="w-5 h-5 accent-primary"
       />
 
-      <label class="text-xs md:text-sm text-gray-700 dark:text-gray-300 font-medium"> Usuario activo </label>
+      <label
+        class="text-xs md:text-sm text-gray-700 dark:text-gray-300 font-medium"
+      >
+        Usuario activo
+      </label>
     </div>
 
     <!-- BOTONES -->
-    <div class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 pt-4 md:pt-6">
+    <div
+      class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 pt-4 md:pt-6"
+    >
       <!-- VOLVER / CANCELAR -->
       <button
         type="button"

@@ -8,7 +8,9 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../core/service/user.service';
-import { combineLatest } from 'rxjs';
+import { ImageService } from '../../../core/service/image.service';
+import { combineLatest, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -20,11 +22,16 @@ export class UserFormComponent implements OnInit {
   mode: 'create' | 'edit' | 'view' = 'create';
   userId?: number;
 
-  roles = ['ADMIN']; // por ahora solo ADMIN
+  selectedFile: File | null = null;
+  imagePreview: string | null = null;
+  currentImage: string | null = null;
+
+  roles = ['ADMIN'];
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
+    private imageService: ImageService,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
@@ -66,6 +73,7 @@ export class UserFormComponent implements OnInit {
       telefono: ['', [Validators.required, Validators.pattern(/^\d{7,15}$/)]],
       password: [''],
       fechaNacimiento: [''],
+      imageUrl: [''],
       roles: ['ADMIN', Validators.required],
       activo: [true],
     });
@@ -78,14 +86,41 @@ export class UserFormComponent implements OnInit {
           email: user.email,
           telefono: user.telefono,
           fechaNacimiento: user.fechaNacimiento,
+          imageUrl: user.imageUrl,
           roles: user.roles?.[0] ?? 'ADMIN',
           activo: user.activo,
         });
+        this.currentImage = user.imageUrl;
       },
       error: () => {
         this.back();
       },
     });
+  }
+
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      alert('Solo se permiten imágenes (JPG, PNG, WEBP)');
+      event.target.value = '';
+      return;
+    }
+
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      alert('La imagen no debe superar 5MB');
+      event.target.value = '';
+      return;
+    }
+
+    this.selectedFile = file;
+
+    const reader = new FileReader();
+    reader.onload = () => (this.imagePreview = reader.result as string);
+    reader.readAsDataURL(file);
   }
 
   submit() {
@@ -98,23 +133,36 @@ export class UserFormComponent implements OnInit {
       return;
     }
 
-    const payload = {
-      email: this.form.value.email,
-      telefono: this.form.value.telefono,
-      fechaNacimiento: this.form.value.fechaNacimiento,
-      roles: [this.form.value.roles],
-      activo: this.form.value.activo,
-    };
+    const uploadImage$ = this.selectedFile
+      ? this.imageService.upload(this.selectedFile)
+      : of(this.form.value.imageUrl);
 
-    if (this.mode === 'create') {
-      this.userService.create(payload).subscribe(() => this.back());
-    }
+    uploadImage$
+      .pipe(
+        switchMap((imageUrl) => {
+          const payload = {
+            email: this.form.value.email,
+            telefono: this.form.value.telefono,
+            fechaNacimiento: this.form.value.fechaNacimiento,
+            imageUrl: imageUrl || undefined,
+            roles: [this.form.value.roles],
+            activo: this.form.value.activo,
+          };
 
-    if (this.mode === 'edit') {
-      this.userService
-        .update(this.userId!, payload)
-        .subscribe(() => this.back());
-    }
+          if (this.mode === 'create') {
+            return this.userService.create(payload);
+          } else {
+            return this.userService.update(this.userId!, payload);
+          }
+        }),
+      )
+      .subscribe({
+        next: () => this.back(),
+        error: (err) => {
+          console.error('Error al guardar usuario', err);
+          alert('Error al guardar el usuario');
+        },
+      });
   }
 
   back() {
