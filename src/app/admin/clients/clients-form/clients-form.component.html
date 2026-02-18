@@ -1,181 +1,209 @@
 <div
   *ngIf="form"
-  class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card p-4 md:p-6 lg:p-8 max-w-xl shadow-card mx-auto transition-colors"
+  class="min-h-screen bg-gray-100 dark:bg-slate-900 p-4 md:p-8 flex items-center justify-center"
 >
-  <!-- HEADER -->
-  <div class="mb-6 md:mb-8">
-    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
-      {{
-        mode === "create"
-          ? "Nuevo cliente"
-          : mode === "edit"
-            ? "Editar cliente"
-            : "Detalle del cliente"
-      }}
-    </h2>
-
-    <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
-      {{
-        mode === "create"
-          ? "Registra un nuevo cliente"
-          : mode === "edit"
-            ? "Actualiza la información del cliente"
-            : "Información registrada"
-      }}
-    </p>
-  </div>
-
-  <!-- FORM -->
-  <form
-    [formGroup]="form"
-    class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
-  >
-    <!-- NOMBRES -->
-    <div>
-      <label
-        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-        >Nombres</label
-      >
-      <input
-        formControlName="nombres"
-        type="text"
-        placeholder="Ej: Juan"
-        [readonly]="mode === 'view'"
-        class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 read-only:bg-gray-50 dark:read-only:bg-gray-600 transition-colors"
-        [ngClass]="{
-          'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
-            !isFieldInvalid('nombres'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
-            isFieldInvalid('nombres'),
-        }"
-      />
-      <p
-        *ngIf="isFieldInvalid('nombres')"
-        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
-      >
-        {{ getErrorMessage("nombres") }}
-      </p>
-    </div>
-
-    <!-- APELLIDOS -->
-    <div>
-      <label
-        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-        >Apellidos</label
-      >
-      <input
-        formControlName="apellidos"
-        type="text"
-        placeholder="Ej: Pérez"
-        [readonly]="mode === 'view'"
-        class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 read-only:bg-gray-50 dark:read-only:bg-gray-600 transition-colors"
-        [ngClass]="{
-          'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
-            !isFieldInvalid('apellidos'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
-            isFieldInvalid('apellidos'),
-        }"
-      />
-      <p
-        *ngIf="isFieldInvalid('apellidos')"
-        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
-      >
-        {{ getErrorMessage("apellidos") }}
-      </p>
-    </div>
-
-    <!-- TELÉFONO -->
-    <div>
-      <label
-        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-        >Teléfono</label
-      >
-      <input
-        formControlName="telefono"
-        type="text"
-        placeholder="987654321"
-        maxlength="9"
-        [readonly]="mode === 'view'"
-        class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 read-only:bg-gray-50 dark:read-only:bg-gray-600 transition-colors"
-        [ngClass]="{
-          'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
-            !isFieldInvalid('telefono'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
-            isFieldInvalid('telefono'),
-        }"
-      />
-      <p
-        *ngIf="isFieldInvalid('telefono')"
-        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
-      >
-        {{ getErrorMessage("telefono") }}
-      </p>
-    </div>
-
-    <!-- CORREO -->
-    <div>
-      <label
-        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-        >Correo</label
-      >
-      <input
-        formControlName="correo"
-        type="email"
-        placeholder="ejemplo@correo.com"
-        [readonly]="mode === 'view'"
-        class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 read-only:bg-gray-50 dark:read-only:bg-gray-600 transition-colors"
-        [ngClass]="{
-          'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
-            !isFieldInvalid('correo'),
-          'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
-            isFieldInvalid('correo'),
-        }"
-      />
-      <p
-        *ngIf="isFieldInvalid('correo')"
-        class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
-      >
-        {{ getErrorMessage("correo") }}
-      </p>
-    </div>
-
-    <!-- CANAL ORIGEN -->
-    <div class="md:col-span-2">
-      <label
-        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-        >Canal de origen</label
-      >
-      <select
-        formControlName="canalOrigen"
-        [disabled]="mode === 'view'"
-        class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary disabled:bg-gray-50 dark:disabled:bg-gray-600 transition-colors"
-      >
-        <option value="WEB">Web</option>
-        <option value="WHATSAPP">WhatsApp</option>
-        <option value="TIENDA">Tienda</option>
-      </select>
-    </div>
-  </form>
-
-  <!-- BOTONES -->
   <div
-    class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 pt-4 md:pt-6"
+    class="bg-slate-50 dark:bg-gray-800/95 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-2xl p-6 md:p-10 lg:p-12 max-w-2xl w-full shadow-2xl transition-all"
   >
-    <button
-      type="button"
-      (click)="cancel()"
-      class="w-full sm:w-auto px-6 py-2.5 md:py-3 text-sm md:text-base rounded-form bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-    >
-      {{ mode === "view" ? "Volver" : "Cancelar" }}
-    </button>
+    <!-- HEADER CON ICONO -->
+    <div class="mb-8 md:mb-10">
+      <div class="flex items-center gap-3 mb-4">
+        <div
+          class="p-3 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600"
+        >
+          <svg
+            class="w-6 h-6 md:w-7 md:h-7 text-white"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <circle cx="12" cy="9" r="3" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5 20c0-2 3-3 7-3s7 1 7 3M15 6h4l-1.5 2.5M7 8h3V5"
+            />
+          </svg>
+        </div>
+        <h2
+          class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white"
+        >
+          <ng-container [ngSwitch]="mode">
+            <span *ngSwitchCase="'create'">Crear Cliente</span>
+            <span *ngSwitchCase="'edit'">Editar Cliente</span>
+            <span *ngSwitchCase="'view'">Detalles del Cliente</span>
+          </ng-container>
+        </h2>
+      </div>
 
-    <button
-      *ngIf="mode !== 'view'"
-      type="button"
-      (click)="submit()"
-      class="w-full sm:w-auto px-6 py-2.5 md:py-3 text-sm md:text-base rounded-form bg-primary text-white font-semibold hover:bg-primary-hover transition-colors"
+      <p
+        class="text-sm md:text-base text-gray-600 dark:text-gray-400 ml-0 md:ml-12"
+      >
+        <ng-container [ngSwitch]="mode">
+          <span *ngSwitchCase="'create'"
+            >Ingresa los detalles del nuevo cliente</span
+          >
+          <span *ngSwitchCase="'edit'"
+            >Actualiza la información del cliente</span
+          >
+          <span *ngSwitchCase="'view'">Visualiza los detalles del cliente</span>
+        </ng-container>
+      </p>
+    </div>
+
+    <!-- FORM -->
+    <form
+      [formGroup]="form"
+      class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
     >
-      {{ mode === "create" ? "Crear cliente" : "Guardar cambios" }}
-    </button>
+      <!-- NOMBRES -->
+      <div>
+        <label
+          class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+          >Nombres</label
+        >
+        <input
+          formControlName="nombres"
+          type="text"
+          placeholder="Ej: Juan"
+          [readonly]="mode === 'view'"
+          class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 read-only:bg-gray-50 dark:read-only:bg-gray-600/30 read-only:cursor-not-allowed transition-all"
+          [ngClass]="{
+            'border-gray-200 dark:border-gray-600 focus:ring-amber-500 focus:border-amber-500 focus:ring-offset-amber-50':
+              !isFieldInvalid('nombres'),
+            'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50 focus:ring-red-500':
+              isFieldInvalid('nombres'),
+          }"
+        />
+        <p
+          *ngIf="isFieldInvalid('nombres')"
+          class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-2"
+        >
+          {{ getErrorMessage("nombres") }}
+        </p>
+      </div>
+
+      <!-- APELLIDOS -->
+      <div>
+        <label
+          class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+          >Apellidos</label
+        >
+        <input
+          formControlName="apellidos"
+          type="text"
+          placeholder="Ej: Pérez"
+          [readonly]="mode === 'view'"
+          class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 read-only:bg-gray-50 dark:read-only:bg-gray-600/30 read-only:cursor-not-allowed transition-all"
+          [ngClass]="{
+            'border-gray-200 dark:border-gray-600 focus:ring-amber-500 focus:border-amber-500 focus:ring-offset-amber-50':
+              !isFieldInvalid('apellidos'),
+            'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50 focus:ring-red-500':
+              isFieldInvalid('apellidos'),
+          }"
+        />
+        <p
+          *ngIf="isFieldInvalid('apellidos')"
+          class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-2"
+        >
+          {{ getErrorMessage("apellidos") }}
+        </p>
+      </div>
+
+      <!-- TELÉFONO -->
+      <div>
+        <label
+          class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+          >Teléfono</label
+        >
+        <input
+          formControlName="telefono"
+          type="text"
+          placeholder="987654321"
+          maxlength="9"
+          [readonly]="mode === 'view'"
+          class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 read-only:bg-gray-50 dark:read-only:bg-gray-600/30 read-only:cursor-not-allowed transition-all"
+          [ngClass]="{
+            'border-gray-200 dark:border-gray-600 focus:ring-amber-500 focus:border-amber-500 focus:ring-offset-amber-50':
+              !isFieldInvalid('telefono'),
+            'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50 focus:ring-red-500':
+              isFieldInvalid('telefono'),
+          }"
+        />
+        <p
+          *ngIf="isFieldInvalid('telefono')"
+          class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-2"
+        >
+          {{ getErrorMessage("telefono") }}
+        </p>
+      </div>
+
+      <!-- CORREO -->
+      <div>
+        <label
+          class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+          >Correo</label
+        >
+        <input
+          formControlName="correo"
+          type="email"
+          placeholder="ejemplo@correo.com"
+          [readonly]="mode === 'view'"
+          class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 read-only:bg-gray-50 dark:read-only:bg-gray-600/30 read-only:cursor-not-allowed transition-all"
+          [ngClass]="{
+            'border-gray-200 dark:border-gray-600 focus:ring-amber-500 focus:border-amber-500 focus:ring-offset-amber-50':
+              !isFieldInvalid('correo'),
+            'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50 focus:ring-red-500':
+              isFieldInvalid('correo'),
+          }"
+        />
+        <p
+          *ngIf="isFieldInvalid('correo')"
+          class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-2"
+        >
+          {{ getErrorMessage("correo") }}
+        </p>
+      </div>
+
+      <!-- CANAL ORIGEN -->
+      <div class="md:col-span-2">
+        <label
+          class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+          >Canal de origen</label
+        >
+        <select
+          formControlName="canalOrigen"
+          [disabled]="mode === 'view'"
+          class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:bg-gray-50 dark:disabled:bg-gray-600/30 disabled:cursor-not-allowed transition-all"
+        >
+          <option value="WEB">🌐 Web</option>
+          <option value="WHATSAPP">📱 WhatsApp</option>
+          <option value="TIENDA">🏪 Tienda Física</option>
+        </select>
+      </div>
+    </form>
+
+    <!-- BOTONES -->
+    <div
+      class="flex flex-col sm:flex-row justify-between gap-3 md:gap-4 pt-8 md:pt-10 border-t border-gray-200 dark:border-gray-700 mt-8 md:mt-10"
+    >
+      <button
+        type="button"
+        (click)="cancel()"
+        class="px-6 py-3 md:py-3.5 text-sm md:text-base rounded-lg bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200"
+      >
+        {{ mode === "view" ? "← Volver" : "✕ Cancelar" }}
+      </button>
+
+      <button
+        *ngIf="mode !== 'view'"
+        type="button"
+        (click)="submit()"
+        class="px-8 py-3 md:py-3.5 text-sm md:text-base rounded-lg bg-gradient-to-r from-orange-600 to-amber-600 text-white font-semibold hover:from-orange-700 hover:to-amber-700 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+      >
+        {{ mode === "create" ? "✓ Crear Cliente" : "✓ Guardar Cambios" }}
+      </button>
+    </div>
   </div>
 </div>

@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.zzootec.tudominio.com', // Cambia esto por tu URL de producción
+  apiUrl: 'https://api.zzootec.com',
+  n8nUrl: 'https://n8n.zzootec.com',
+  iaApiUrl: 'https://ia.zzootec.com',
 };

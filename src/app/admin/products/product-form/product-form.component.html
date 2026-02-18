@@ -1,307 +1,349 @@
 <div
-  class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-card p-4 md:p-6 lg:p-8 max-w-6xl shadow-card mx-auto transition-colors"
+  class="min-h-screen bg-gray-100 dark:bg-slate-900 p-4 md:p-8 flex items-center justify-center"
 >
-  <!-- ================= HEADER ================= -->
-  <div class="mb-6 md:mb-8">
-    <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
-      {{
-        mode === "create"
-          ? "Nuevo producto"
-          : mode === "edit"
-            ? "Editar producto"
-            : "Detalle del producto"
-      }}
-    </h2>
-
-    <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
-      {{
-        mode === "view"
-          ? "Información del producto"
-          : "Complete la información requerida"
-      }}
-    </p>
-  </div>
-
-  <!-- ================= GRID PRINCIPAL ================= -->
-  <!-- CLAVE: columnas dinámicas según mode -->
   <div
-    class="grid gap-6 md:gap-8"
-    [ngClass]="{
-      'grid-cols-1': mode !== 'view',
-      'lg:grid-cols-[minmax(0,1fr)_380px]': mode === 'view',
-    }"
+    class="bg-slate-50 dark:bg-gray-800/95 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-2xl p-6 md:p-10 lg:p-12 max-w-6xl w-full shadow-2xl transition-all"
   >
-    <!-- ================================================= -->
-    <!-- =============== COLUMNA IZQUIERDA =============== -->
-    <!-- ================================================= -->
-    <div>
-      <form
-        [formGroup]="form"
-        class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6"
-      >
-        <!-- ================= NOMBRE ================= -->
-        <div class="md:col-span-2">
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Nombre del producto
-          </label>
-          <input
-            formControlName="name"
-            placeholder="Ej: Laptop Dell Inspiron 15"
-            [readonly]="mode === 'view'"
-            class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 read-only:bg-gray-50 dark:read-only:bg-gray-600 transition-colors"
-            [ngClass]="{
-              'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
-                !isFieldInvalid('name'),
-              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
-                isFieldInvalid('name'),
-            }"
-          />
-          <p
-            *ngIf="isFieldInvalid('name')"
-            class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
-          >
-            {{ getErrorMessage("name") }}
-          </p>
-        </div>
-
-        <!-- ================= DESCRIPCIÓN ================= -->
-        <div class="md:col-span-2">
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Descripción
-          </label>
-          <textarea
-            formControlName="description"
-            placeholder="Ej: Laptop potente con procesador Intel i7, 16GB RAM, 512GB SSD..."
-            [readonly]="mode === 'view'"
-            rows="4"
-            class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 read-only:bg-gray-50 dark:read-only:bg-gray-600 transition-colors resize-none"
-            [ngClass]="{
-              'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
-                !isFieldInvalid('description'),
-              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
-                isFieldInvalid('description'),
-            }"
-          ></textarea>
-          <p
-            *ngIf="isFieldInvalid('description')"
-            class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
-          >
-            {{ getErrorMessage("description") }}
-          </p>
-        </div>
-        <div>
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Categoría
-          </label>
-          <select
-            formControlName="categoryId"
-            (change)="onCategoryChange()"
-            [disabled]="mode === 'view'"
-            class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 disabled:bg-gray-50 dark:disabled:bg-gray-600 transition-colors"
-            [ngClass]="{
-              'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
-                !isFieldInvalid('categoryId'),
-              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
-                isFieldInvalid('categoryId'),
-            }"
-          >
-            <option value="">Seleccione categoría</option>
-            <option *ngFor="let c of categories" [value]="c.id">
-              {{ c.name }}
-            </option>
-          </select>
-          <p
-            *ngIf="isFieldInvalid('categoryId')"
-            class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
-          >
-            {{ getErrorMessage("categoryId") }}
-          </p>
-        </div>
-
-        <!-- ================= MARCA ================= -->
-        <div>
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Marca
-          </label>
-          <select
-            (change)="onBrandChange()"
-            [disabled]="mode === 'view'"
-            class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 disabled:bg-gray-50 dark:disabled:bg-gray-600 transition-colors"
-            [ngClass]="{
-              'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
-                !isFieldInvalid('brandId'),
-              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
-                isFieldInvalid('brandId'),
-            }"
-          >
-            <option value="">Seleccione marca</option>
-            <option *ngFor="let b of brands" [value]="b.id">
-              {{ b.name }}
-            </option>
-          </select>
-          <p
-            *ngIf="isFieldInvalid('brandId')"
-            class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
-          >
-            {{ getErrorMessage("brandId") }}
-          </p>
-        </div>
-
-        <!-- ================= PRECIO ================= -->
-        <div>
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Precio (S/.)
-          </label>
-          <input
-            type="number"
-            step="0.01"
-            min="0.01"
-            formControlName="price"
-            placeholder="0.00"
-            [readonly]="mode === 'view'"
-            class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 read-only:bg-gray-50 dark:read-only:bg-gray-600 transition-colors"
-            [ngClass]="{
-              'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
-                !isFieldInvalid('price'),
-              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
-                isFieldInvalid('price'),
-            }"
-          />
-          <p
-            *ngIf="isFieldInvalid('price')"
-            class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
-          >
-            {{ getErrorMessage("price") }}
-          </p>
-        </div>
-
-        <!-- ================= STOCK ================= -->
-        <div>
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Stock
-          </label>
-          <input
-            type="number"
-            min="0"
-            formControlName="stock"
-            placeholder="0"
-            [readonly]="mode === 'view'"
-            class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 read-only:bg-gray-50 dark:read-only:bg-gray-600 transition-colors"
-            [ngClass]="{
-              'border-gray-300 dark:border-gray-600 focus:ring-primary/40 focus:border-primary':
-                !isFieldInvalid('stock'),
-              'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
-                isFieldInvalid('stock'),
-            }"
-          />
-          <p
-            *ngIf="isFieldInvalid('stock')"
-            class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-1"
-          >
-            {{ getErrorMessage("stock") }}
-          </p>
-        </div>
-
-        <!-- ================= ESTADO ================= -->
-        <div>
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Estado
-          </label>
-          <select
-            formControlName="status"
-            [disabled]="mode === 'view'"
-            class="w-full px-4 py-2.5 md:py-3 text-sm md:text-base rounded-form border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary disabled:bg-gray-50 dark:disabled:bg-gray-600 transition-colors"
-          >
-            <option value="Activo">Activo</option>
-            <option value="Inactivo">Inactivo</option>
-          </select>
-        </div>
-
-        <!-- ================= UPLOAD (NO VIEW) ================= -->
-        <div *ngIf="mode !== 'view'" class="md:col-span-2">
-          <label
-            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Imagen del producto
-          </label>
-
-          <label
-            class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-form p-6 md:p-8 flex flex-col items-center justify-center cursor-pointer hover:border-primary dark:hover:border-primary transition-colors"
-          >
-            <input
-              type="file"
-              accept="image/*"
-              class="hidden"
-              (change)="onFileChange($event)"
-            />
-
-            <p
-              *ngIf="!imagePreview"
-              class="text-sm text-gray-500 dark:text-gray-400"
-            >
-              📁 Click para subir imagen
-            </p>
-
-            <img
-              *ngIf="imagePreview"
-              [src]="imagePreview"
-              class="w-32 h-32 md:w-40 md:h-40 object-cover rounded-form border border-gray-200 dark:border-gray-700"
-            />
-          </label>
-        </div>
-      </form>
-
-      <!-- ================= BOTONES ================= -->
-      <div
-        class="flex flex-col sm:flex-row justify-end gap-3 md:gap-4 mt-6 md:mt-8"
-      >
-        <button
-          class="w-full sm:w-auto px-6 py-2.5 md:py-3 text-sm md:text-base rounded-form bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-          (click)="cancel()"
+    <!-- HEADER CON ICONO -->
+    <div class="mb-8 md:mb-10">
+      <div class="flex items-center gap-3 mb-4">
+        <div
+          class="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600"
         >
-          {{ mode === "view" ? "Volver" : "Cancelar" }}
-        </button>
-
-        <button
-          *ngIf="mode !== 'view'"
-          class="w-full sm:w-auto px-6 py-2.5 md:py-3 text-sm md:text-base rounded-form bg-primary text-white font-semibold hover:bg-primary-hover transition-colors"
-          (click)="submit()"
+          <svg
+            class="w-6 h-6 md:w-7 md:h-7 text-white"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M20 7l-8-4-8 4m0 0l8-4 8 4m0 0v10l-8 4-8-4V7m8 4v10m-8-4l8 4 8-4"
+            />
+          </svg>
+        </div>
+        <h2
+          class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white"
         >
-          {{ mode === "edit" ? "Guardar cambios" : "Crear producto" }}
-        </button>
+          <ng-container [ngSwitch]="mode">
+            <span *ngSwitchCase="'create'">Crear Producto</span>
+            <span *ngSwitchCase="'edit'">Editar Producto</span>
+            <span *ngSwitchCase="'view'">Detalles del Producto</span>
+          </ng-container>
+        </h2>
       </div>
+
+      <p
+        class="text-sm md:text-base text-gray-600 dark:text-gray-400 ml-0 md:ml-12"
+      >
+        <ng-container [ngSwitch]="mode">
+          <span *ngSwitchCase="'create'"
+            >Ingresa los detalles del nuevo producto</span
+          >
+          <span *ngSwitchCase="'edit'"
+            >Actualiza la información del producto</span
+          >
+          <span *ngSwitchCase="'view'"
+            >Visualiza los detalles del producto</span
+          >
+        </ng-container>
+      </p>
     </div>
 
-    <!-- ================================================= -->
-    <!-- =============== COLUMNA DERECHA (SOLO VIEW) ===== -->
-    <!-- ================================================= -->
-    <div *ngIf="mode === 'view' && productImage" class="sticky top-8">
-      <div
-        class="rounded-card border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 md:p-6 shadow-card"
-      >
-        <img
-          [src]="productImage"
-          class="w-full h-48 md:h-72 object-contain rounded-form"
-        />
+    <!-- ================= GRID PRINCIPAL ================= -->
+    <div
+      class="grid gap-6 md:gap-8"
+      [ngClass]="{
+        'grid-cols-1': mode !== 'view',
+        'lg:grid-cols-[minmax(0,1fr)_300px]': mode === 'view',
+      }"
+    >
+      <div>
+        <form
+          [formGroup]="form"
+          class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
+        >
+          <!-- ================= NOMBRE ================= -->
+          <div class="md:col-span-2">
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+            >
+              Nombre del producto
+            </label>
+            <input
+              formControlName="name"
+              placeholder="Ej: Laptop Dell Inspiron 15, iPhone 15, etc..."
+              [readonly]="mode === 'view'"
+              class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 read-only:bg-gray-50 dark:read-only:bg-gray-600/30 read-only:cursor-not-allowed transition-all"
+              [ngClass]="{
+                'border-gray-200 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 focus:ring-offset-blue-50':
+                  !isFieldInvalid('name'),
+                'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50 focus:ring-red-500':
+                  isFieldInvalid('name'),
+              }"
+            />
+            <p
+              *ngIf="isFieldInvalid('name')"
+              class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-2"
+            >
+              {{ getErrorMessage("name") }}
+            </p>
+          </div>
 
-        <div class="mt-4 md:mt-6 text-center">
-          <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">
-            Imagen del producto
-          </p>
+          <!-- ================= DESCRIPCIÓN ================= -->
+          <div class="md:col-span-2">
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+            >
+              Descripción
+            </label>
+            <textarea
+              formControlName="description"
+              placeholder="Ej: Procesador Intel i7, 16GB RAM, pantalla OLED, cámara 48MP..."
+              [readonly]="mode === 'view'"
+              rows="4"
+              class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 read-only:bg-gray-50 dark:read-only:bg-gray-600/30 read-only:cursor-not-allowed transition-all resize-none"
+              [ngClass]="{
+                'border-gray-200 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 focus:ring-offset-blue-50':
+                  !isFieldInvalid('description'),
+                'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50 focus:ring-red-500':
+                  isFieldInvalid('description'),
+              }"
+            ></textarea>
+            <p
+              *ngIf="isFieldInvalid('description')"
+              class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-2"
+            >
+              {{ getErrorMessage("description") }}
+            </p>
+          </div>
+
+          <!-- CATEGORÍA Y MARCA -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+            >
+              Categoría
+            </label>
+            <select
+              formControlName="categoryId"
+              (change)="onCategoryChange()"
+              [disabled]="mode === 'view'"
+              class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:bg-gray-50 dark:disabled:bg-gray-600/30 disabled:cursor-not-allowed transition-all"
+              [ngClass]="{
+                'border-gray-200 dark:border-gray-600':
+                  !isFieldInvalid('categoryId'),
+                'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+                  isFieldInvalid('categoryId'),
+              }"
+            >
+              <option value="">Seleccione categoría</option>
+              <option *ngFor="let c of categories" [value]="c.id">
+                {{ c.name }}
+              </option>
+            </select>
+            <p
+              *ngIf="isFieldInvalid('categoryId')"
+              class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-2"
+            >
+              {{ getErrorMessage("categoryId") }}
+            </p>
+          </div>
+
+          <!-- ================= MARCA ================= -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+            >
+              Marca
+            </label>
+            <select
+              formControlName="brandId"
+              (change)="onBrandChange()"
+              [disabled]="mode === 'view'"
+              class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:bg-gray-50 dark:disabled:bg-gray-600/30 disabled:cursor-not-allowed transition-all"
+              [ngClass]="{
+                'border-gray-200 dark:border-gray-600':
+                  !isFieldInvalid('brandId'),
+                'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+                  isFieldInvalid('brandId'),
+              }"
+            >
+              <option value="">Seleccione marca</option>
+              <option *ngFor="let b of brands" [value]="b.id">
+                {{ b.name }}
+              </option>
+            </select>
+            <p
+              *ngIf="isFieldInvalid('brandId')"
+              class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-2"
+            >
+              {{ getErrorMessage("brandId") }}
+            </p>
+          </div>
+
+          <!-- ================= PRECIO ================= -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+            >
+              Precio (S/.)
+            </label>
+            <input
+              type="number"
+              step="0.01"
+              min="0.01"
+              formControlName="price"
+              placeholder="0.00"
+              [readonly]="mode === 'view'"
+              class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 read-only:bg-gray-50 dark:read-only:bg-gray-600/30 read-only:cursor-not-allowed transition-all"
+              [ngClass]="{
+                'border-gray-200 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 focus:ring-offset-blue-50':
+                  !isFieldInvalid('price'),
+                'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50 focus:ring-red-500':
+                  isFieldInvalid('price'),
+              }"
+            />
+            <p
+              *ngIf="isFieldInvalid('price')"
+              class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-2"
+            >
+              {{ getErrorMessage("price") }}
+            </p>
+          </div>
+
+          <!-- ================= STOCK ================= -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+            >
+              Stock
+            </label>
+            <input
+              type="number"
+              min="0"
+              formControlName="stock"
+              placeholder="0"
+              [readonly]="mode === 'view'"
+              class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 read-only:bg-gray-50 dark:read-only:bg-gray-600/30 read-only:cursor-not-allowed transition-all"
+              [ngClass]="{
+                'border-gray-200 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 focus:ring-offset-blue-50':
+                  !isFieldInvalid('stock'),
+                'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50 focus:ring-red-500':
+                  isFieldInvalid('stock'),
+              }"
+            />
+            <p
+              *ngIf="isFieldInvalid('stock')"
+              class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-2"
+            >
+              {{ getErrorMessage("stock") }}
+            </p>
+          </div>
+
+          <!-- ================= ESTADO ================= -->
+          <div>
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+            >
+              Estado
+            </label>
+            <select
+              formControlName="status"
+              [disabled]="mode === 'view'"
+              class="w-full px-4 py-3 md:py-4 text-sm md:text-base rounded-lg border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:bg-gray-50 dark:disabled:bg-gray-600/30 disabled:cursor-not-allowed transition-all"
+              [ngClass]="{
+                'border-gray-200 dark:border-gray-600':
+                  !isFieldInvalid('status'),
+                'border-red-500 ring-2 ring-red-200 dark:ring-red-900/50':
+                  isFieldInvalid('status'),
+              }"
+            >
+              <option value="ACTIVE">Activo</option>
+              <option value="INACTIVE">Inactivo</option>
+            </select>
+            <p
+              *ngIf="isFieldInvalid('status')"
+              class="text-red-500 dark:text-red-400 text-xs md:text-sm mt-2"
+            >
+              {{ getErrorMessage("status") }}
+            </p>
+          </div>
+
+          <!-- ================= UPLOAD (NO VIEW) ================= -->
+          <div *ngIf="mode !== 'view'" class="md:col-span-2">
+            <label
+              class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+            >
+              Imagen del producto
+            </label>
+
+            <label
+              class="border-2 border-dashed border-gray-300 dark:border-gray-500 rounded-lg p-6 md:p-8 flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+            >
+              <input
+                type="file"
+                accept="image/*"
+                class="hidden"
+                (change)="onFileChange($event)"
+              />
+
+              <p
+                *ngIf="!imagePreview"
+                class="text-sm text-gray-500 dark:text-gray-400"
+              >
+                Click para subir imagen
+              </p>
+
+              <img
+                *ngIf="imagePreview"
+                [src]="imagePreview"
+                class="w-32 h-32 md:w-40 md:h-40 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
+              />
+            </label>
+          </div>
+        </form>
+
+        <!-- ================= BOTONES ================= -->
+        <div
+          class="flex flex-col sm:flex-row justify-between gap-3 md:gap-4 pt-8 md:pt-10 border-t border-gray-200 dark:border-gray-700 mt-8 md:mt-10"
+        >
+          <button
+            class="px-6 py-3 md:py-3.5 text-sm md:text-base rounded-lg bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200"
+            (click)="cancel()"
+          >
+            {{ mode === "view" ? "← Volver" : "✕ Cancelar" }}
+          </button>
+
+          <button
+            *ngIf="mode !== 'view'"
+            class="px-8 py-3 md:py-3.5 text-sm md:text-base rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+            (click)="submit()"
+          >
+            {{ mode === "edit" ? "✓ Guardar Cambios" : "✓ Crear Producto" }}
+          </button>
+        </div>
+      </div>
+
+      <!-- ================================================= -->
+      <!-- =============== COLUMNA DERECHA (SOLO VIEW) ===== -->
+      <!-- ================================================= -->
+      <div *ngIf="mode === 'view' && productImage" class="sticky top-8">
+        <div
+          class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800/95 backdrop-blur-xl p-4 md:p-6 shadow-2xl"
+        >
+          <img
+            [src]="productImage"
+            class="w-full h-48 md:h-72 object-contain rounded-lg"
+          />
+
+          <div class="mt-4 md:mt-6 text-center">
+            <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+              Imagen del producto
+            </p>
+          </div>
         </div>
       </div>
     </div>

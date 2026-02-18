@@ -85,8 +85,13 @@ export class BrandFormComponent implements OnInit {
         name: brand.name,
       });
 
-      this.brandImage = brand.imageUrl
-        ? `${environment.apiUrl}/uploads/${brand.imageUrl}`
+      // Usar la URL tal cual si es absoluta (ej. Cloudinary),
+      // si no, concatenar con el backend local.
+      this.brandImage = brand.logoUrl
+        ? brand.logoUrl.startsWith('http://') ||
+          brand.logoUrl.startsWith('https://')
+          ? brand.logoUrl
+          : `${environment.apiUrl}/uploads/${brand.logoUrl}`
         : null;
 
       this.preview = this.brandImage;

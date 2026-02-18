@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AiService } from '../../core/service/ai.service';
 import { AiPanelComponent } from './components/ai-panel/ai-panel.component';
+import { ChatbotComponent } from '../../shared/chatbot/chatbot.component';
 import { InventoryService } from '../../core/service/inventory.service';
 import { InventoryMovement } from '../../models/inventory-movement.model';
 import {
@@ -33,7 +34,13 @@ import {
 @Component({
   standalone: true,
   templateUrl: './dashboard.component.html',
-  imports: [CommonModule, RouterModule, AiPanelComponent, LucideAngularModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    AiPanelComponent,
+    LucideAngularModule,
+    ChatbotComponent,
+  ],
 })
 export class DashboardComponent implements OnInit {
   loading = true;

@@ -1,81 +1,208 @@
 <div
   *ngIf="order"
-  class="bg-white rounded-card shadow-card border border-gray-200 p-8 space-y-8"
+  class="min-h-screen bg-gray-100 dark:bg-slate-900 p-4 md:p-8 flex items-center justify-center"
 >
-  <!-- HEADER -->
-  <div class="flex items-center justify-between border-b pb-4">
-    <div>
-      <h2 class="text-xl font-bold text-gray-800">Orden #{{ order.id }}</h2>
-      <p class="text-sm text-gray-500">Detalle de la orden</p>
+  <div
+    class="bg-slate-50 dark:bg-gray-800/95 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-2xl p-6 md:p-10 lg:p-12 max-w-4xl w-full shadow-2xl transition-all"
+  >
+    <!-- HEADER CON ICONO -->
+    <div class="mb-8 md:mb-10">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div
+            class="p-3 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600"
+          >
+            <svg
+              class="w-6 h-6 md:w-7 md:h-7 text-white"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <div>
+            <h2
+              class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white"
+            >
+              Orden #{{ order.id }}
+            </h2>
+            <p class="text-sm md:text-base text-gray-600 dark:text-gray-400">
+              Detalle de la orden
+            </p>
+          </div>
+        </div>
+
+        <button
+          (click)="back()"
+          class="px-6 py-3 md:py-3.5 text-sm md:text-base rounded-lg bg-gray-100 dark:bg-gray-700/50 text-gray-700 dark:text-gray-300 font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200"
+        >
+          ← Volver
+        </button>
+      </div>
     </div>
 
-    <button
-      (click)="back()"
-      class="text-sm font-medium text-primary hover:text-primary-hover"
-    >
-      ← Volver
-    </button>
-  </div>
-
-  <!-- INFO -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-    <div class="bg-gray-50 p-5 rounded-form border border-gray-200">
-      <p class="text-xs text-gray-500 uppercase">Cliente</p>
-      <p class="text-lg font-semibold">{{ clientName }}</p>
-    </div>
-
-    <div class="bg-gray-50 p-5 rounded-form border border-gray-200">
-      <p class="text-xs text-gray-500 uppercase">Fecha</p>
-      <p class="text-lg font-semibold">{{ formatDate(order.fecha) }}</p>
-    </div>
-
-    <div class="bg-gray-50 p-5 rounded-form border border-gray-200">
-      <p class="text-xs text-gray-500 uppercase">Estado</p>
-      <span
-        class="px-4 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold"
-      >
-        {{ order.status }}
-      </span>
-    </div>
-
+    <!-- INFO CARDS -->
     <div
-      class="bg-primary-light p-5 rounded-form border border-primary-lighter"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-10"
     >
-      <p class="text-xs text-gray-500 uppercase">Total</p>
-      <p class="text-2xl font-bold">S/ {{ total.toFixed(2) }}</p>
+      <!-- CLIENTE -->
+      <div
+        class="rounded-xl border border-gray-200 dark:border-gray-700/50 p-4 md:p-6 bg-gray-50 dark:bg-gray-800/30 backdrop-blur-sm"
+      >
+        <p
+          class="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider mb-2"
+        >
+          Cliente
+        </p>
+        <p class="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
+          {{ clientName }}
+        </p>
+      </div>
+
+      <!-- FECHA -->
+      <div
+        class="rounded-xl border border-gray-200 dark:border-gray-700/50 p-4 md:p-6 bg-gray-50 dark:bg-gray-800/30 backdrop-blur-sm"
+      >
+        <p
+          class="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider mb-2"
+        >
+          Fecha
+        </p>
+        <p class="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
+          {{ formatDate(order.fecha) }}
+        </p>
+      </div>
+
+      <!-- ESTADO -->
+      <div
+        class="rounded-xl border border-gray-200 dark:border-gray-700/50 p-4 md:p-6 bg-gray-50 dark:bg-gray-800/30 backdrop-blur-sm"
+      >
+        <p
+          class="text-xs md:text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider mb-2"
+        >
+          Estado
+        </p>
+        <span
+          class="inline-flex px-3 py-1 rounded-full text-xs md:text-sm font-semibold"
+          [ngClass]="{
+            'bg-green-100 text-green-700 dark:bg-green-950/40 dark:text-green-300':
+              order.status === 'Entregado',
+            'bg-blue-100 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300':
+              order.status === 'Pendiente',
+            'bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300':
+              order.status === 'En proceso',
+          }"
+        >
+          {{ order.status }}
+        </span>
+      </div>
+
+      <!-- TOTAL -->
+      <div
+        class="rounded-xl border border-slate-300 dark:border-slate-700/50 p-4 md:p-6 bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-800/50 dark:to-slate-700/30 backdrop-blur-sm"
+      >
+        <p
+          class="text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wider mb-2"
+        >
+          Total
+        </p>
+        <p
+          class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white"
+        >
+          S/ {{ total.toFixed(2) }}
+        </p>
+      </div>
     </div>
-  </div>
 
-  <!-- PRODUCTOS -->
-  <div>
-    <h3 class="font-semibold mb-3">Productos</h3>
+    <!-- PRODUCTOS SECTION -->
+    <div class="mb-8 md:mb-10">
+      <h3
+        class="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6"
+      >
+        Productos
+      </h3>
 
-    <table
-      class="w-full text-sm border border-gray-200 rounded-form overflow-hidden"
+      <div
+        class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700/50"
+      >
+        <table class="w-full text-sm">
+          <thead
+            class="bg-gray-100 dark:bg-gray-800/40 border-b border-gray-200 dark:border-gray-700/50"
+          >
+            <tr>
+              <th
+                class="px-4 md:px-6 py-3 md:py-4 text-left font-semibold text-gray-700 dark:text-gray-200"
+              >
+                Producto
+              </th>
+              <th
+                class="px-4 md:px-6 py-3 md:py-4 text-center font-semibold text-gray-700 dark:text-gray-200"
+              >
+                Cantidad
+              </th>
+              <th
+                class="px-4 md:px-6 py-3 md:py-4 text-right font-semibold text-gray-700 dark:text-gray-200"
+              >
+                Precio
+              </th>
+              <th
+                class="px-4 md:px-6 py-3 md:py-4 text-right font-semibold text-gray-700 dark:text-gray-200"
+              >
+                Subtotal
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr
+              *ngFor="let item of order.items; let last = last"
+              class="border-b border-gray-200 dark:border-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-800/40 transition-colors"
+              [class.border-b-0]="last"
+            >
+              <td
+                class="px-4 md:px-6 py-3 md:py-4 text-gray-900 dark:text-gray-100"
+              >
+                {{ item.productName }}
+              </td>
+              <td
+                class="px-4 md:px-6 py-3 md:py-4 text-center text-gray-700 dark:text-gray-300 font-medium"
+              >
+                {{ item.quantity }}
+              </td>
+              <td
+                class="px-4 md:px-6 py-3 md:py-4 text-right text-gray-700 dark:text-gray-300"
+              >
+                S/ {{ item.price.toFixed(2) }}
+              </td>
+              <td
+                class="px-4 md:px-6 py-3 md:py-4 text-right font-semibold text-gray-900 dark:text-white"
+              >
+                S/ {{ (item.price * item.quantity).toFixed(2) }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TOTAL FOOTER -->
+    <div
+      class="flex justify-end pt-6 md:pt-8 border-t border-gray-200 dark:border-gray-700/50"
     >
-      <thead class="bg-gray-50">
-        <tr>
-          <th class="px-4 py-3 text-left">Producto</th>
-          <th class="px-4 py-3 text-center">Cantidad</th>
-          <th class="px-4 py-3 text-right">Precio</th>
-          <th class="px-4 py-3 text-right">Subtotal</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let item of order.items" class="border-t">
-          <td class="px-4 py-3">{{ item.productName }}</td>
-          <td class="px-4 py-3 text-center">{{ item.quantity }}</td>
-          <td class="px-4 py-3 text-right">S/ {{ item.price.toFixed(2) }}</td>
-          <td class="px-4 py-3 text-right font-semibold">
-            S/ {{ (item.price * item.quantity).toFixed(2) }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="flex justify-end text-xl font-bold border-t pt-4">
-    Total: S/ {{ total.toFixed(2) }}
+      <div class="text-right">
+        <p class="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-2">
+          Total de la orden
+        </p>
+        <p class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+          S/ {{ total.toFixed(2) }}
+        </p>
+      </div>
+    </div>
   </div>
 </div>

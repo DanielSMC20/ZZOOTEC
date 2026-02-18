@@ -90,8 +90,13 @@ export class CategoryFormComponent implements OnInit {
         status: res.active ? 'Activo' : 'Inactivo',
       });
 
+      // Usar la URL tal cual si es absoluta (ej. Cloudinary),
+      // si no, concatenar con el backend local.
       this.categoryImage = res.imageUrl
-        ? `${environment.apiUrl}/uploads/${res.imageUrl}`
+        ? res.imageUrl.startsWith('http://') ||
+          res.imageUrl.startsWith('https://')
+          ? res.imageUrl
+          : `${environment.apiUrl}/uploads/${res.imageUrl}`
         : null;
     });
   }

@@ -1,17 +1,18 @@
 .menu-item {
-  @apply flex items-center gap-3 px-4 py-2 rounded-form
-         text-sm font-medium text-gray-700
-         hover:bg-primary-lighter transition-colors;
+  @apply flex items-center gap-3 px-4 py-2.5 rounded-lg
+         text-sm font-semibold text-gray-600 dark:text-gray-300
+         hover:bg-black hover:text-white dark:hover:bg-black dark:hover:text-white
+         transition-all duration-200 cursor-pointer;
 }
 
 .active-link {
-  @apply bg-primary-lighter text-primary font-semibold;
+  @apply bg-black text-white font-semibold shadow-md;
 }
 
 .active-link .icon {
-  @apply text-primary;
+  @apply text-white;
 }
 
 .icon {
-  @apply w-5 h-5 text-gray-500;
+  @apply w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors;
 }
