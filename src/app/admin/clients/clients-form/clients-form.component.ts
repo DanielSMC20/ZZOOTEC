@@ -114,27 +114,26 @@ export class ClientsFormComponent implements OnInit {
 
     if (this.mode === 'create') {
       this.clientsService
-        .createClient(this.buildFormData(data))
+        .createClient(this.buildPayload(data))
         .subscribe(() => this.router.navigate(['/admin/clients']));
     }
 
     if (this.mode === 'edit' && this.clientId) {
       this.clientsService
-        .updateClient(this.clientId, this.buildFormData(data))
+        .updateClient(this.clientId, this.buildPayload(data))
         .subscribe(() => this.router.navigate(['/admin/clients']));
     }
   }
 
-  private buildFormData(data: any): FormData {
-    const fd = new FormData();
-
-    fd.append('nombres', data.nombres);
-    fd.append('apellidos', data.apellidos);
-    fd.append('telefono', data.telefono);
-    fd.append('correo', data.correo);
-    fd.append('canalOrigen', data.canalOrigen);
-
-    return fd;
+  private buildPayload(data: any): any {
+    // Construye el objeto JSON que espera el backend (ClientRequestDto)
+    return {
+      nombres: data.nombres,
+      apellidos: data.apellidos,
+      telefono: data.telefono,
+      correo: data.correo,
+      canalOrigen: data.canalOrigen,
+    };
   }
 
   cancel(): void {

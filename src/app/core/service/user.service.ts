@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -21,39 +21,30 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  private getHeaders() {
-    const token = sessionStorage.getItem('token');
-    return {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + token,
-      }),
-    };
-  }
-
   getProfile(): Observable<UserProfile> {
-    return this.http.get<UserProfile>(this.profileUrl, this.getHeaders());
+    return this.http.get<UserProfile>(this.profileUrl);
   }
   getById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${id}`, this.getHeaders());
+    return this.http.get<any>(`${this.baseUrl}/${id}`);
   }
 
   updateProfile(data: Partial<UserProfile>): Observable<UserProfile> {
-    return this.http.put<UserProfile>(this.profileUrl, data, this.getHeaders());
+    return this.http.put<UserProfile>(this.profileUrl, data);
   }
 
   getAll() {
-    return this.http.get<any[]>(this.baseUrl, this.getHeaders());
+    return this.http.get<any[]>(this.baseUrl);
   }
 
   create(data: any) {
-    return this.http.post(this.baseUrl, data, this.getHeaders());
+    return this.http.post(this.baseUrl, data);
   }
 
   update(id: number, data: any) {
-    return this.http.put(`${this.baseUrl}/${id}`, data, this.getHeaders());
+    return this.http.put(`${this.baseUrl}/${id}`, data);
   }
 
   delete(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`, this.getHeaders());
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

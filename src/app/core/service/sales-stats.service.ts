@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -25,24 +25,14 @@ export class SalesStatsService {
 
   constructor(private http: HttpClient) {}
 
-  private getHeaders() {
-    const token = sessionStorage.getItem('token');
-    return {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + token,
-      }),
-    };
-  }
-
   getAllSales(): Observable<any[]> {
-    return this.http.get<any[]>(this.baseUrl, this.getHeaders());
+    return this.http.get<any[]>(this.baseUrl);
   }
 
   seedSalesData(): Observable<string> {
     return this.http.post<string>(
       this.baseUrl + '/seed',
       {},
-      this.getHeaders(),
     );
   }
 

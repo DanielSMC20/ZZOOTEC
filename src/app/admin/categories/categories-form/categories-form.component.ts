@@ -79,6 +79,10 @@ export class CategoryFormComponent implements OnInit {
           Validators.maxLength(50),
         ],
       ],
+      description: [
+        '',
+        [Validators.maxLength(200)],
+      ],
       status: ['Activo'],
     });
   }
@@ -87,6 +91,7 @@ export class CategoryFormComponent implements OnInit {
     this.categoryService.getById(id).subscribe((res) => {
       this.form.patchValue({
         name: res.name,
+        description: res.description || '',
         status: res.active ? 'Activo' : 'Inactivo',
       });
 
@@ -140,6 +145,7 @@ export class CategoryFormComponent implements OnInit {
       'data',
       JSON.stringify({
         name: this.form.value.name,
+        description: this.form.value.description || '',
         active: this.form.value.status === 'Activo',
       }),
     );

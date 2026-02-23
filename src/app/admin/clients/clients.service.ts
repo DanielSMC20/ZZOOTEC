@@ -18,12 +18,13 @@ export class ClientsService {
     return this.http.get<Client>(`${this.API_URL}/${id}`);
   }
 
-  createClient(data: FormData): Observable<Client> {
+  createClient(data: any): Observable<Client> {
+    // Enviar JSON al backend (el controlador espera @RequestBody JSON)
     return this.http.post<Client>(this.API_URL, data);
   }
 
   // 📌 actualizar cliente
-  updateClient(id: number, data: FormData): Observable<Client> {
+  updateClient(id: number, data: any): Observable<Client> {
     return this.http.put<Client>(`${this.API_URL}/${id}`, data);
   }
 

@@ -60,6 +60,18 @@ export class UserFormComponent implements OnInit {
           this.form.enable();
         }
 
+        // Ajustar validadores para contraseña según el modo
+        const pwdControl = this.form.get('password');
+        if (this.mode === 'create') {
+          pwdControl?.setValidators([
+            Validators.required,
+            Validators.minLength(6),
+          ]);
+        } else {
+          pwdControl?.setValidators([]);
+        }
+        pwdControl?.updateValueAndValidity();
+
         if (this.userId) {
           this.loadUser(this.userId);
         }
@@ -70,7 +82,9 @@ export class UserFormComponent implements OnInit {
   initForm() {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      telefono: ['', [Validators.required, Validators.pattern(/^\d{7,15}$/)]],
+      nombres: ['', []],
+      apellidos: ['', []],
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
       password: [''],
       fechaNacimiento: [''],
       imageUrl: [''],
@@ -83,6 +97,8 @@ export class UserFormComponent implements OnInit {
     this.userService.getById(id).subscribe({
       next: (user) => {
         this.form.patchValue({
+          nombres: user.nombres,
+          apellidos: user.apellidos,
           email: user.email,
           telefono: user.telefono,
           fechaNacimiento: user.fechaNacimiento,
@@ -140,7 +156,13 @@ export class UserFormComponent implements OnInit {
     uploadImage$
       .pipe(
         switchMap((imageUrl) => {
-          const payload = {
+          const passwordValue = this.form.value.password;
+
+          // En creación la contraseña es obligatoria (validadores ya la forzaron),
+          // en edición solo la enviamos si el usuario la llenó.
+          const payload: any = {
+            nombres: this.form.value.nombres,
+            apellidos: this.form.value.apellidos,
             email: this.form.value.email,
             telefono: this.form.value.telefono,
             fechaNacimiento: this.form.value.fechaNacimiento,
@@ -150,8 +172,17 @@ export class UserFormComponent implements OnInit {
           };
 
           if (this.mode === 'create') {
+            if (!passwordValue || passwordValue.trim() === '') {
+              throw new Error(
+                'La contraseña es obligatoria al crear un usuario',
+              );
+            }
+            payload.password = passwordValue;
             return this.userService.create(payload);
           } else {
+            if (passwordValue && passwordValue.trim() !== '') {
+              payload.password = passwordValue;
+            }
             return this.userService.update(this.userId!, payload);
           }
         }),
@@ -185,7 +216,10 @@ export class UserFormComponent implements OnInit {
       return 'Ingrese un correo válido';
     }
     if (field?.hasError('pattern')) {
-      return 'El teléfono debe tener entre 7 y 15 dígitos';
+      return 'El teléfono debe tener exactamente 9 dígitos';
+    }
+    if (field?.hasError('minlength')) {
+      return 'La contraseña debe tener al menos 6 caracteres';
     }
 
     return '';

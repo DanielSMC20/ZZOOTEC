@@ -222,10 +222,10 @@ export class ProductFormComponent implements OnInit {
       JSON.stringify({
         name: this.form.value.name,
         description: this.form.value.description,
-        categoryId: this.form.value.categoryId,
-        brandId: this.form.value.brandId,
-        price: this.form.value.price,
-        stock: this.form.value.stock,
+        categoryId: Number(this.form.value.categoryId),
+        brandId: Number(this.form.value.brandId),
+        price: Number(this.form.value.price),
+        stock: Number(this.form.value.stock),
       }),
     );
 
