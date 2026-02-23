@@ -12,16 +12,16 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   }
 
   const token = sessionStorage.getItem('token');
-  
+
   let clonedRequest = req;
   if (token) {
     clonedRequest = req.clone({
       setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
-  
+
   return next(clonedRequest).pipe(
     catchError((error: HttpErrorResponse) => {
       // Si el token expiró (401 Unauthorized o 403 Forbidden)
@@ -29,13 +29,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         // Limpiar sesión
         sessionStorage.removeItem('token');
         sessionStorage.removeItem('user');
-        
+
         // Redireccionar al login
         router.navigate(['/auth/login']);
       }
-      
+
       // Re-lanzar el error para que los componentes lo manejen si lo necesitan
       throw error;
-    })
+    }),
   );
 };

@@ -30,8 +30,6 @@ export class ProductService {
   }
 
   search(q: string) {
-    return this.http.get<Product[]>(
-      `${this.baseUrl}/search?q=${q}`,
-    );
+    return this.http.get<Product[]>(`${this.baseUrl}/search?q=${q}`);
   }
 }

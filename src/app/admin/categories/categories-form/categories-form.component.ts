@@ -79,10 +79,7 @@ export class CategoryFormComponent implements OnInit {
           Validators.maxLength(50),
         ],
       ],
-      description: [
-        '',
-        [Validators.maxLength(200)],
-      ],
+      description: ['', [Validators.maxLength(200)]],
       status: ['Activo'],
     });
   }

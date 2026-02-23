@@ -22,10 +22,7 @@ export class CategoryService {
   }
 
   update(id: number, formData: FormData) {
-    return this.http.put<Category>(
-      `${this.baseUrl}/${id}`,
-      formData,
-    );
+    return this.http.put<Category>(`${this.baseUrl}/${id}`, formData);
   }
 
   delete(id: number) {

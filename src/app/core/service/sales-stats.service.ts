@@ -30,10 +30,7 @@ export class SalesStatsService {
   }
 
   seedSalesData(): Observable<string> {
-    return this.http.post<string>(
-      this.baseUrl + '/seed',
-      {},
-    );
+    return this.http.post<string>(this.baseUrl + '/seed', {});
   }
 
   getCurrentMonthStats(): Observable<SalesStatistics> {

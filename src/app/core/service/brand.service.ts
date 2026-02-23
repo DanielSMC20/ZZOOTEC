@@ -21,10 +21,7 @@ export class BrandService {
   }
 
   update(id: number, formData: FormData) {
-    return this.http.put<any>(
-      `${this.baseUrl}/${id}`,
-      formData,
-    );
+    return this.http.put<any>(`${this.baseUrl}/${id}`, formData);
   }
 
   delete(id: number) {
